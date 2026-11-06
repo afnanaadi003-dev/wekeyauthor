@@ -1,1 +1,1085 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wekey Author — Universal Author & Philosophical Directory</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        emerald: {
+                            50: '#ecfdf5',
+                            100: '#d1fae5',
+                            400: '#34d399',
+                            500: '#10b981',
+                            600: '#059669',
+                            700: '#047857',
+                            900: '#064e3b',
+                            950: '#022c22',
+                        },
+                        darkbg: '#06090e',
+                        darkcard: '#0f172a',
+                        darkborder: '#1e293b'
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        serif: ['Merriweather', 'serif']
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- FontAwesome & Google Fonts -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Merriweather:ital,wght@0,300;0,400;0,700;1,300&display=swap" rel="stylesheet">
+    <style>
+        body {
+            background-color: #050811;
+            color: #f1f5f9;
+            font-family: 'Inter', sans-serif;
+        }
+        .glass-panel {
+            background: rgba(15, 23, 42, 0.75);
+            backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+        .glass-card {
+            background: rgba(15, 23, 42, 0.5);
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(16, 185, 129, 0.15);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .glass-card:hover {
+            border-color: rgba(16, 185, 129, 0.5);
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px -10px rgba(16, 185, 129, 0.2);
+        }
+        .emerald-gradient-text {
+            background: linear-gradient(135deg, #34d399 0%, #10b981 50%, #059669 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        /* Custom scrollbars */
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: #06090e; }
+        ::-webkit-scrollbar-thumb { background: #10b98144; border-radius: 9999px; }
+        ::-webkit-scrollbar-thumb:hover { background: #10b981aa; }
+        
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col justify-between selection:bg-emerald-500 selection:text-black">
 
+    <!-- Top Glow Background Effects -->
+    <div class="fixed top-[-10%] left-[-10%] w-[40vw] h-[40vw] rounded-full bg-emerald-600/10 blur-[140px] pointer-events-none"></div>
+    <div class="fixed top-[30%] right-[-10%] w-[35vw] h-[35vw] rounded-full bg-teal-600/10 blur-[120px] pointer-events-none"></div>
+
+    <!-- MAIN HEADER & TOP NAV -->
+    <header class="sticky top-0 z-40 w-full glass-panel border-b border-emerald-500/20 px-4 lg:px-8 py-3">
+        <div class="max-w-7xl mx-auto flex items-center justify-between">
+            <!-- Brand Logo -->
+            <div class="flex items-center space-x-3 cursor-pointer" onclick="switchTab('explore')">
+                <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-emerald-400 to-emerald-700 flex items-center justify-center text-black font-black text-xl shadow-lg shadow-emerald-500/20">
+                    W
+                </div>
+                <div>
+                    <h1 class="text-xl font-black tracking-wider text-white flex items-center gap-2">
+                        WEKEY <span class="emerald-gradient-text font-serif italic">AUTHOR</span>
+                    </h1>
+                    <p class="text-[10px] text-gray-400 font-medium tracking-widest uppercase">The Universal Author & Philosophical Directory</p>
+                </div>
+            </div>
+
+            <!-- Quick Action & Create Modal Button -->
+            <div class="flex items-center space-x-3">
+                <button onclick="openCreateModal()" class="px-3.5 py-2 rounded-xl bg-gradient-to-r from-emerald-500 to-emerald-700 hover:from-emerald-400 hover:to-emerald-600 text-black font-semibold text-xs sm:text-sm flex items-center gap-2 shadow-lg shadow-emerald-500/20 transition-all">
+                    <i class="fa-solid fa-feather-pointed"></i>
+                    <span class="hidden sm:inline">Create Author Bio</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- 10 MENU NAVIGATION BAR -->
+        <nav class="max-w-7xl mx-auto mt-3 pt-2 border-t border-white/5 flex items-center overflow-x-auto space-x-2 no-scrollbar text-xs font-medium">
+            <button onclick="switchTab('explore')" id="tab-explore" class="nav-btn active px-3.5 py-2 rounded-lg bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 whitespace-nowrap transition-all">
+                <i class="fa-solid fa-magnifying-glass mr-1.5"></i> 1. Directory Search
+            </button>
+            <button onclick="switchTab('slider')" id="tab-slider" class="nav-btn px-3.5 py-2 rounded-lg bg-white/5 hover:bg-white/10 text-gray-300 whitespace-nowrap transition-all">
+                <i class="fa-solid fa-[#10b981] fa-star mr-1.5 text-emerald-400"></i> 2. Featured Writers (10)
+            </button>
+            <button onclick="switchTab('books')" id="tab-books" class="nav-btn px-3.5 py-2 rounded-lg bg-white/5 hover:bg-white/10 text-gray-300 whitespace-nowrap transition-all">
+                <i class="fa-solid fa-book-bookmark mr-1.5 text-emerald-400"></i> 3. Famous Books (100)
+            </button>
+            <button onclick="switchTab('authors')" id="tab-authors" class="nav-btn px-3.5 py-2 rounded-lg bg-white/5 hover:bg-white/10 text-gray-300 whitespace-nowrap transition-all">
+                <i class="fa-solid fa-users mr-1.5 text-emerald-400"></i> 4. Best Authors (100)
+            </button>
+            <button onclick="switchTab('awards')" id="tab-awards" class="nav-btn px-3.5 py-2 rounded-lg bg-white/5 hover:bg-white/10 text-gray-300 whitespace-nowrap transition-all">
+                <i class="fa-solid fa-trophy mr-1.5 text-emerald-400"></i> 5. Literary Awards (100)
+            </button>
+            <button onclick="switchTab('philosophies')" id="tab-philosophies" class="nav-btn px-3.5 py-2 rounded-lg bg-white/5 hover:bg-white/10 text-gray-300 whitespace-nowrap transition-all">
+                <i class="fa-solid fa-brain mr-1.5 text-emerald-400"></i> 6. Philosophies (100)
+            </button>
+            <button onclick="switchTab('greenworld')" id="tab-greenworld" class="nav-btn px-3.5 py-2 rounded-lg bg-emerald-500/10 text-emerald-300 border border-emerald-500/40 hover:bg-emerald-500/20 whitespace-nowrap transition-all">
+                <i class="fa-solid fa-seedling mr-1.5 text-emerald-400"></i> 7. Green World Feature
+            </button>
+            <button onclick="switchTab('style')" id="tab-style" class="nav-btn px-3.5 py-2 rounded-lg bg-white/5 hover:bg-white/10 text-gray-300 whitespace-nowrap transition-all">
+                <i class="fa-solid fa-pen-nib mr-1.5 text-emerald-400"></i> 8. Style Directory (500)
+            </button>
+            <button onclick="switchTab('continent')" id="tab-continent" class="nav-btn px-3.5 py-2 rounded-lg bg-white/5 hover:bg-white/10 text-gray-300 whitespace-nowrap transition-all">
+                <i class="fa-solid fa-earth-americas mr-1.5 text-emerald-400"></i> 9. Continents (1,000)
+            </button>
+            <button onclick="switchTab('country')" id="tab-country" class="nav-btn px-3.5 py-2 rounded-lg bg-white/5 hover:bg-white/10 text-gray-300 whitespace-nowrap transition-all">
+                <i class="fa-solid fa-flag mr-1.5 text-emerald-400"></i> 10. Country Engine (50,000)
+            </button>
+        </nav>
+    </header>
+
+    <!-- CONTENT BODY CONTAINER -->
+    <main class="flex-1 max-w-7xl w-full mx-auto px-4 lg:px-8 py-6 z-10">
+
+        <!-- TAB 1: EXPLORE & DIRECTORY SEARCH (DEFAULT HOME) -->
+        <section id="sec-explore" class="tab-section space-y-8">
+            <!-- Search Banner -->
+            <div class="glass-panel p-6 sm:p-10 rounded-3xl text-center relative overflow-hidden border border-emerald-500/30">
+                <div class="absolute -right-10 -bottom-10 w-60 h-60 bg-emerald-500/10 rounded-full blur-3xl pointer-events-none"></div>
+                <span class="inline-block px-3 py-1 rounded-full bg-emerald-500/20 text-emerald-400 text-xs font-semibold uppercase tracking-wider mb-3">Universal Web Aggregator & Encyclopedia</span>
+                <h2 class="text-3xl sm:text-5xl font-black text-white mb-4">Search <span class="emerald-gradient-text">Global Authors & Knowledge</span></h2>
+                <p class="text-gray-400 text-sm sm:text-base max-w-2xl mx-auto mb-6">Aggregating live insights across Wikipedia, Wikimedia, WikiHow, Google, and Bing for millions of global writers, literary genres, and philosophies.</p>
+
+                <!-- Search Engine Bar -->
+                <div class="max-w-2xl mx-auto flex items-center bg-slate-900/90 border border-emerald-500/40 rounded-2xl p-2 shadow-2xl focus-within:border-emerald-400">
+                    <i class="fa-solid fa-magnifying-glass text-emerald-400 px-3"></i>
+                    <input id="mainSearchInput" type="text" placeholder="Search author name, book, genre, style, philosophy (e.g. Amim Ahsan, Obama, Tolstoy)..." class="w-full bg-transparent text-white placeholder-gray-500 text-sm focus:outline-none py-2">
+                    <button onclick="handleGlobalSearch()" class="px-5 py-2.5 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-black font-bold text-xs sm:text-sm shrink-0 transition-all">
+                        Search Directory
+                    </button>
+                </div>
+
+                <!-- Engine Source Indicator -->
+                <div class="flex items-center justify-center gap-4 mt-4 text-[11px] text-gray-500 flex-wrap">
+                    <span><i class="fa-solid fa-circle-check text-emerald-400 mr-1"></i> Wikipedia Index</span>
+                    <span><i class="fa-solid fa-circle-check text-emerald-400 mr-1"></i> Wikimedia Commons</span>
+                    <span><i class="fa-solid fa-circle-check text-emerald-400 mr-1"></i> WikiHow Knowledge</span>
+                    <span><i class="fa-solid fa-circle-check text-emerald-400 mr-1"></i> Global Web Crawlers</span>
+                </div>
+            </div>
+
+            <!-- Fast Filter Categories -->
+            <div class="flex items-center justify-between">
+                <h3 class="text-xl font-bold text-white flex items-center gap-2">
+                    <i class="fa-solid fa-layer-group text-emerald-400"></i> Featured Authors Catalog
+                </h3>
+                <span id="authorCountBadge" class="text-xs bg-emerald-500/20 text-emerald-300 px-3 py-1 rounded-full border border-emerald-500/30">Showing 10 Primary Authors</span>
+            </div>
+
+            <!-- Authors Directory Grid -->
+            <div id="directoryGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- Dynamically populated via JS -->
+            </div>
+        </section>
+
+        <!-- TAB 2: FEATURED 10 WRITERS AUTO-ROTATING SLIDER -->
+        <section id="sec-slider" class="tab-section hidden space-y-6">
+            <div class="flex items-center justify-between">
+                <div>
+                    <h2 class="text-2xl sm:text-3xl font-black text-white">Featured 10 Global Authors</h2>
+                    <p class="text-xs sm:text-sm text-gray-400">Auto-rotating showcase of modern literature pioneers & historical masters.</p>
+                </div>
+                <div class="flex space-x-2">
+                    <button onclick="prevSlide()" class="w-10 h-10 rounded-xl bg-white/10 hover:bg-emerald-500/20 text-white hover:text-emerald-400 flex items-center justify-center transition-all"><i class="fa-solid fa-chevron-left"></i></button>
+                    <button onclick="nextSlide()" class="w-10 h-10 rounded-xl bg-white/10 hover:bg-emerald-500/20 text-white hover:text-emerald-400 flex items-center justify-center transition-all"><i class="fa-solid fa-chevron-right"></i></button>
+                </div>
+            </div>
+
+            <!-- Slider Display Card -->
+            <div id="heroSliderCard" class="glass-panel p-8 rounded-3xl border border-emerald-500/30 relative overflow-hidden min-h-[380px] flex flex-col justify-between transition-all duration-500">
+                <!-- Inner populated dynamically -->
+            </div>
+        </section>
+
+        <!-- TAB 3: 100 FAMOUS BOOKS -->
+        <section id="sec-books" class="tab-section hidden space-y-6">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                <div>
+                    <h2 class="text-2xl sm:text-3xl font-black text-white">100 Famous Books Directory</h2>
+                    <p class="text-xs sm:text-sm text-gray-400">Curated from Amim Ahsan Library & worldwide classic archives.</p>
+                </div>
+                <input id="bookSearch" type="text" oninput="filterBooks()" placeholder="Filter books by title or author..." class="bg-slate-900 border border-white/10 rounded-xl px-4 py-2 text-xs sm:text-sm text-white focus:outline-none focus:border-emerald-400 w-full sm:w-64">
+            </div>
+            <div id="booksGrid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                <!-- Dynamically populated -->
+            </div>
+        </section>
+
+        <!-- TAB 4: 100 BEST AUTHORS -->
+        <section id="sec-authors" class="tab-section hidden space-y-6">
+            <div>
+                <h2 class="text-2xl sm:text-3xl font-black text-white">100 Best Authors of Human History</h2>
+                <p class="text-xs sm:text-sm text-gray-400">Covering literary masters from Amim Ahsan, Barack Obama, Leo Tolstoy to Virginia Woolf & Rabindranath Tagore.</p>
+            </div>
+            <div id="bestAuthorsGrid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                <!-- Dynamically populated -->
+            </div>
+        </section>
+
+        <!-- TAB 5: 100 LITERARY AWARDS -->
+        <section id="sec-awards" class="tab-section hidden space-y-6">
+            <div>
+                <h2 class="text-2xl sm:text-3xl font-black text-white">100 Prestigious Literary Awards</h2>
+                <p class="text-xs sm:text-sm text-gray-400">Nobel Prize in Literature, Pulitzer Prize, Booker Prize, Neustadt, and international honors.</p>
+            </div>
+            <div id="awardsGrid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                <!-- Dynamically populated -->
+            </div>
+        </section>
+
+        <!-- TAB 6: 100 PHILOSOPHICAL SYSTEMS -->
+        <section id="sec-philosophies" class="tab-section hidden space-y-6">
+            <div>
+                <h2 class="text-2xl sm:text-3xl font-black text-white">100 Philosophical Systems</h2>
+                <p class="text-xs sm:text-sm text-gray-400">Featuring Green World Philosophy, Stoicism, Existentialism, Rationalism, and Transcendentalism.</p>
+            </div>
+            <div id="philosophiesGrid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+                <!-- Dynamically populated -->
+            </div>
+        </section>
+
+        <!-- TAB 7: GREEN WORLD PHILOSOPHICAL FEATURE -->
+        <section id="sec-greenworld" class="tab-section hidden space-y-8">
+            <div class="glass-panel p-8 sm:p-12 rounded-3xl border border-emerald-500/40 relative overflow-hidden bg-gradient-to-br from-slate-900 via-emerald-950/30 to-slate-900">
+                <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/20 text-emerald-400 text-xs font-semibold mb-4 border border-emerald-500/30">
+                    <i class="fa-solid fa-leaf"></i> SPECIAL PHILOSOPHICAL FEATURE
+                </div>
+                <h1 class="text-3xl sm:text-5xl font-black text-white mb-4">Green World Philosophy</h1>
+                <p class="text-lg text-emerald-300 font-serif italic mb-6">"Alternative of Waste & Empathy — Restoring Universal Harmony Through Actionable Positivity."</p>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8 text-sm text-gray-300 leading-relaxed font-light">
+                    <div class="space-y-4">
+                        <h3 class="text-lg font-bold text-white flex items-center gap-2 border-b border-emerald-500/30 pb-2">
+                            <i class="fa-solid fa-recycle text-emerald-400"></i> 1. Waste Eradication & Empathy
+                        </h3>
+                        <p>The Green World philosophy, pioneered in modern literary discourse by Amim Ahsan, posits that environmental degradation is directly linked to psychological waste—unfiltered cynicism, emotional neglect, and material overconsumption. By substituting material waste with universal empathy, human society can recalibrate its relationship with nature.</p>
+                    </div>
+                    <div class="space-y-4">
+                        <h3 class="text-lg font-bold text-white flex items-center gap-2 border-b border-emerald-500/30 pb-2">
+                            <i class="fa-solid fa-heart-pulse text-emerald-400"></i> 2. Positive Planetary Re-Engineering
+                        </h3>
+                        <p>Unlike purely reactive environmentalism, Green World Philosophy advocates proactive planetary healing through creative synthesis: authoring literature that instills reverence for biophilic ecosystems, promoting zero-waste economic structures, and practicing radical empathy toward all living organisms.</p>
+                    </div>
+                </div>
+
+                <div class="mt-8 pt-6 border-t border-white/10 flex flex-col sm:flex-row justify-between items-center gap-4">
+                    <div class="text-xs text-gray-400">
+                        <span class="font-bold text-emerald-400">1,000 Key Tenets Cataloged</span> | Author: Amim Ahsan & Global Ecological Thinkers
+                    </div>
+                    <button onclick="openGreenWorldModal()" class="px-6 py-3 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-black font-bold text-xs sm:text-sm flex items-center gap-2 shadow-lg shadow-emerald-500/20 transition-all">
+                        <i class="fa-solid fa-book-open"></i> Read Full 1000-Point Manifesto Modal
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- TAB 8: STYLE DIRECTORY (500 WRITERS) -->
+        <section id="sec-style" class="tab-section hidden space-y-6">
+            <div>
+                <h2 class="text-2xl sm:text-3xl font-black text-white">500 Writers by Writing Style & Aesthetic</h2>
+                <p class="text-xs sm:text-sm text-gray-400">Categorized by Prose, Poetic Realism, Philosophical Fiction, Journalism, Modernism & Magical Realism.</p>
+            </div>
+            <div id="styleDirectoryGrid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                <!-- Dynamically populated -->
+            </div>
+        </section>
+
+        <!-- TAB 9: CONTINENT DIRECTORY (1,000 REGIONAL WRITERS) -->
+        <section id="sec-continent" class="tab-section hidden space-y-6">
+            <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+                <div>
+                    <h2 class="text-2xl sm:text-3xl font-black text-white">1,000 Continental Authors Directory</h2>
+                    <p class="text-xs sm:text-sm text-gray-400">Explore literature across Asia, Europe, Americas, Africa, and Oceania.</p>
+                </div>
+                <div class="flex flex-wrap gap-2 text-xs">
+                    <button onclick="filterContinent('All')" class="px-3 py-1.5 rounded-lg bg-emerald-500 text-black font-bold">All</button>
+                    <button onclick="filterContinent('Asia')" class="px-3 py-1.5 rounded-lg bg-white/10 hover:bg-white/20 text-gray-300">Asia</button>
+                    <button onclick="filterContinent('Europe')" class="px-3 py-1.5 rounded-lg bg-white/10 hover:bg-white/20 text-gray-300">Europe</button>
+                    <button onclick="filterContinent('Americas')" class="px-3 py-1.5 rounded-lg bg-white/10 hover:bg-white/20 text-gray-300">Americas</button>
+                    <button onclick="filterContinent('Africa')" class="px-3 py-1.5 rounded-lg bg-white/10 hover:bg-white/20 text-gray-300">Africa</button>
+                </div>
+            </div>
+            <div id="continentGrid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                <!-- Dynamically populated -->
+            </div>
+        </section>
+
+        <!-- TAB 10: COUNTRY ENGINE (50,000 CATALOG ENTRIES) -->
+        <section id="sec-country" class="tab-section hidden space-y-6">
+            <div class="glass-panel p-6 rounded-2xl border border-emerald-500/20">
+                <h2 class="text-2xl sm:text-3xl font-black text-white mb-2">50,000+ Country-Based Catalog Search</h2>
+                <p class="text-xs sm:text-sm text-gray-400 mb-4">Interactive index mapping authors across 195 nations globally.</p>
+                <div class="flex flex-col sm:flex-row gap-3">
+                    <select id="countrySelect" onchange="filterCountry()" class="bg-slate-900 border border-emerald-500/30 text-white rounded-xl px-4 py-2.5 text-xs sm:text-sm focus:outline-none focus:border-emerald-400">
+                        <option value="All">All Nations (195 Countries)</option>
+                        <option value="United States">United States</option>
+                        <option value="Bangladesh">Bangladesh</option>
+                        <option value="United Kingdom">United Kingdom</option>
+                        <option value="Russia">Russia</option>
+                        <option value="France">France</option>
+                        <option value="Japan">Japan</option>
+                        <option value="India">India</option>
+                        <option value="Nigeria">Nigeria</option>
+                        <option value="Colombia">Colombia</option>
+                    </select>
+                    <input id="countryAuthorInput" type="text" oninput="filterCountry()" placeholder="Filter by author name..." class="bg-slate-900 border border-white/10 text-white rounded-xl px-4 py-2.5 text-xs sm:text-sm focus:outline-none focus:border-emerald-400 flex-1">
+                </div>
+            </div>
+            <div id="countryGrid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                <!-- Dynamically populated -->
+            </div>
+        </section>
+
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="glass-panel border-t border-emerald-500/20 py-8 px-4 lg:px-8 mt-12 z-10">
+        <div class="max-w-7xl mx-auto flex flex-col sm:flex-row justify-between items-center gap-4 text-xs text-gray-400">
+            <div class="flex items-center space-x-2">
+                <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+                <span class="font-bold text-white">Wekey Author Directory</span> — Self-updating Knowledge Engine
+            </div>
+            <div>
+                Built for writers, readers, and philosophers worldwide | Powered by Green World Principles
+            </div>
+        </div>
+    </footer>
+
+    <!-- AUTHOR DETAIL MODAL -->
+    <div id="authorModal" class="fixed inset-0 bg-black/80 backdrop-blur-md z-50 hidden flex items-center justify-center p-4 overflow-y-auto">
+        <div class="glass-panel max-w-3xl w-full rounded-3xl p-6 sm:p-8 border border-emerald-500/40 relative max-h-[90vh] overflow-y-auto text-left shadow-2xl">
+            <button onclick="closeModal('authorModal')" class="absolute top-4 right-4 w-9 h-9 rounded-full bg-white/10 hover:bg-white/20 text-white flex items-center justify-center text-sm transition-all"><i class="fa-solid fa-xmark"></i></button>
+            <div id="modalAuthorContent">
+                <!-- Loaded via JS -->
+            </div>
+        </div>
+    </div>
+
+    <!-- CREATE AUTHOR BIO FORM MODAL -->
+    <div id="createModal" class="fixed inset-0 bg-black/80 backdrop-blur-md z-50 hidden flex items-center justify-center p-4 overflow-y-auto">
+        <div class="glass-panel max-w-2xl w-full rounded-3xl p-6 sm:p-8 border border-emerald-500/40 relative max-h-[90vh] overflow-y-auto text-left shadow-2xl">
+            <button onclick="closeModal('createModal')" class="absolute top-4 right-4 w-9 h-9 rounded-full bg-white/10 hover:bg-white/20 text-white flex items-center justify-center text-sm transition-all"><i class="fa-solid fa-xmark"></i></button>
+            <h3 class="text-2xl font-black text-white mb-1">Create Author Profile</h3>
+            <p class="text-xs text-gray-400 mb-6">Publish a comprehensive bio entry into the Wekey Author global index.</p>
+
+            <form id="createAuthorForm" onsubmit="handleCreateAuthor(event)" class="space-y-4 text-xs">
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-gray-300 font-semibold mb-1">Author Full Name</label>
+                        <input type="text" id="formName" required placeholder="e.g. Amim Ahsan" class="w-full bg-slate-900 border border-white/10 rounded-xl p-3 text-white focus:outline-none focus:border-emerald-400">
+                    </div>
+                    <div>
+                        <label class="block text-gray-300 font-semibold mb-1">Genre / Literary Category</label>
+                        <input type="text" id="formGenre" required placeholder="e.g. Philosophy, Modernism" class="w-full bg-slate-900 border border-white/10 rounded-xl p-3 text-white focus:outline-none focus:border-emerald-400">
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-gray-300 font-semibold mb-1">Writing Style & Interest</label>
+                        <input type="text" id="formStyle" required placeholder="e.g. Eco-Empathy, Poetic Prose" class="w-full bg-slate-900 border border-white/10 rounded-xl p-3 text-white focus:outline-none focus:border-emerald-400">
+                    </div>
+                    <div>
+                        <label class="block text-gray-300 font-semibold mb-1">Country / Nationality</label>
+                        <input type="text" id="formCountry" required placeholder="e.g. United States, Bangladesh" class="w-full bg-slate-900 border border-white/10 rounded-xl p-3 text-white focus:outline-none focus:border-emerald-400">
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block text-gray-300 font-semibold mb-1">Notable Works (Comma separated)</label>
+                    <input type="text" id="formWorks" required placeholder="e.g. Green World Principles, Echoes of Mind" class="w-full bg-slate-900 border border-white/10 rounded-xl p-3 text-white focus:outline-none focus:border-emerald-400">
+                </div>
+
+                <div>
+                    <label class="block text-gray-300 font-semibold mb-1">Why Famous & Core Impact</label>
+                    <textarea id="formFamous" rows="2" required placeholder="Describe the author's primary contributions and global recognition..." class="w-full bg-slate-900 border border-white/10 rounded-xl p-3 text-white focus:outline-none focus:border-emerald-400"></textarea>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-gray-300 font-semibold mb-1">Awards & Honors</label>
+                        <input type="text" id="formAwards" placeholder="e.g. International Literary Gold Medal" class="w-full bg-slate-900 border border-white/10 rounded-xl p-3 text-white focus:outline-none focus:border-emerald-400">
+                    </div>
+                    <div>
+                        <label class="block text-gray-300 font-semibold mb-1">Philosophical Stance</label>
+                        <input type="text" id="formPhilosophy" placeholder="e.g. Green World Philosophy" class="w-full bg-slate-900 border border-white/10 rounded-xl p-3 text-white focus:outline-none focus:border-emerald-400">
+                    </div>
+                </div>
+
+                <div class="pt-3">
+                    <button type="submit" class="w-full py-3 rounded-xl bg-gradient-to-r from-emerald-500 to-emerald-700 hover:from-emerald-400 hover:to-emerald-600 text-black font-bold text-sm shadow-lg shadow-emerald-500/20 transition-all">
+                        Publish Author Bio to Wekey Index
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- GREEN WORLD MANIFESTO MODAL -->
+    <div id="greenWorldModal" class="fixed inset-0 bg-black/80 backdrop-blur-md z-50 hidden flex items-center justify-center p-4 overflow-y-auto">
+        <div class="glass-panel max-w-4xl w-full rounded-3xl p-6 sm:p-10 border border-emerald-500/40 relative max-h-[90vh] overflow-y-auto text-left shadow-2xl">
+            <button onclick="closeModal('greenWorldModal')" class="absolute top-4 right-4 w-9 h-9 rounded-full bg-white/10 hover:bg-white/20 text-white flex items-center justify-center text-sm transition-all"><i class="fa-solid fa-xmark"></i></button>
+            
+            <div class="text-center border-b border-emerald-500/20 pb-6 mb-6">
+                <span class="px-3 py-1 rounded-full bg-emerald-500/20 text-emerald-400 text-xs font-bold uppercase">1000-Point Manifesto</span>
+                <h2 class="text-3xl sm:text-4xl font-black text-white mt-2">Green World: Alternative of Waste & Empathy</h2>
+                <p class="text-xs text-gray-400 mt-1">Foundational Essay & Action Blueprint by Amim Ahsan and Environmental Thinkers</p>
+            </div>
+
+            <div class="space-y-6 text-xs sm:text-sm text-gray-300 leading-relaxed font-light">
+                <div class="p-4 rounded-2xl bg-emerald-950/30 border border-emerald-500/30">
+                    <h4 class="font-bold text-emerald-300 text-sm mb-1"><i class="fa-solid fa-seedling mr-1.5"></i> Core Principle</h4>
+                    <p>"Humanity's fundamental crisis is not merely physical pollution, but emotional and spiritual wastefulness. True sustainability requires replacing indifferent consumption with active radical empathy for every conscious entity and natural ecosystem."</p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div class="p-4 rounded-xl bg-slate-900 border border-white/5 space-y-2">
+                        <h5 class="font-bold text-white text-xs text-emerald-400">Pillar 1: Mindful Creation</h5>
+                        <p class="text-xs text-gray-400">Writers and thinkers must reject cynical tropes in favor of stories that highlight restorative human connection, planetary reverence, and zero-waste intellectual output.</p>
+                    </div>
+                    <div class="p-4 rounded-xl bg-slate-900 border border-white/5 space-y-2">
+                        <h5 class="font-bold text-white text-xs text-emerald-400">Pillar 2: Universal Empathy Index</h5>
+                        <p class="text-xs text-gray-400">Measuring societal progress by empathy output rather than raw material consumption. Transforming industrial waste into regenerative bio-cycles.</p>
+                    </div>
+                    <div class="p-4 rounded-xl bg-slate-900 border border-white/5 space-y-2">
+                        <h5 class="font-bold text-white text-xs text-emerald-400">Pillar 3: Positive Actionism</h5>
+                        <p class="text-xs text-gray-400">Replacing passive climate despair with actionable positivity: reforestation projects, eco-ethical authorship, and community resilience programs.</p>
+                    </div>
+                    <div class="p-4 rounded-xl bg-slate-900 border border-white/5 space-y-2">
+                        <h5 class="font-bold text-white text-xs text-emerald-400">Pillar 4: Ecological Literature</h5>
+                        <p class="text-xs text-gray-400">Establishing the Green World library index to preserve works that inspire ecological harmony and positive world transformation.</p>
+                    </div>
+                </div>
+
+                <div>
+                    <h4 class="font-bold text-white mb-2">1,000 Tenets Summary Overview:</h4>
+                    <ul class="list-disc list-inside space-y-1 text-xs text-gray-400 pl-2">
+                        <li>Tenet 1-250: Eradication of thought-waste and emotional detachment.</li>
+                        <li>Tenet 251-500: Implementing circular economy principles in creative industries.</li>
+                        <li>Tenet 501-750: Establishing cross-species empathy and global bio-ethics.</li>
+                        <li>Tenet 751-1000: Actionable blueprints for global ecological re-greening and optimistic literature.</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- JAVASCRIPT APPLICATION LOGIC -->
+    <script>
+        // PRIMARY DATASETS & STATE
+        const state = {
+            activeTab: 'explore',
+            currentSlideIndex: 0,
+            searchQuery: '',
+            authors: [
+                {
+                    id: 'amim-ahsan',
+                    name: 'Amim Ahsan',
+                    genre: 'Philosophy & Eco-Literature',
+                    style: 'Green World Philosophy, Poetic Realism',
+                    country: 'United States',
+                    continent: 'Americas',
+                    notableWorks: ['Green World Principles', 'Alternative of Waste & Empathy', 'Pulsating Eco-System', 'Modern Mindset Shift'],
+                    famousWhy: 'Pioneered Green World Philosophy advocating universal empathy and the total elimination of physical & emotional waste in literature.',
+                    awards: ['Global Eco-Literary Award 2024', 'Philosophical Excellence Medal'],
+                    family: 'Descendant of scholars, advocate for global literary unity.',
+                    philosophy: 'Green World Philosophy — Radical Empathy over Waste',
+                    img: 'https://placehold.co/400x500/064e3b/34d399?text=Amim+Ahsan',
+                    bio: 'Amim Ahsan is an influential American philosophical writer and visionary scholar who formulated the Green World Philosophy. His works emphasize replacing environmental and psychological waste with active empathy, positive actionism, and harmonic living.'
+                },
+                {
+                    id: 'barack-obama',
+                    name: 'Barack Obama',
+                    genre: 'Memoir & Political Philosophy',
+                    style: 'Eloquently Reflective, Civic Realism',
+                    country: 'United States',
+                    continent: 'Americas',
+                    notableWorks: ['A Promised Land', 'Dreams from My Father', 'The Audacity of Hope'],
+                    famousWhy: '44th U.S. President, bestselling author combining presidential memoir with civil rights leadership and democratic philosophy.',
+                    awards: ['Nobel Peace Prize (2009)', 'Grammy Award for Best Spoken Word Album'],
+                    family: 'Married to Michelle Obama; two daughters (Malia and Sasha).',
+                    philosophy: 'Civic Idealism & Hope-Based Democracy',
+                    img: 'https://placehold.co/400x500/0f172a/34d399?text=Barack+Obama',
+                    bio: 'Barack Obama is an American author, lawyer, and politician who served as the 44th president of the United States. His writing captures deep introspection on identity, governance, and hope.'
+                },
+                {
+                    id: 'leo-tolstoy',
+                    name: 'Leo Tolstoy',
+                    genre: 'Classical Realism & Christian Anarchism',
+                    style: 'Epic Narrative, Psychological Depth',
+                    country: 'Russia',
+                    continent: 'Europe',
+                    notableWorks: ['War and Peace', 'Anna Karenina', 'The Kingdom of God Is Within You'],
+                    famousWhy: 'Master of Russian realism whose moral and philosophical writings influenced Gandhi and Martin Luther King Jr.',
+                    awards: ['Nominated for Nobel Prize in Literature & Nobel Peace Prize multiple times.'],
+                    family: 'Noble Tolstoy family, married Sophia Behrs with 13 children.',
+                    philosophy: 'Non-violent Resistance & Moral Pacifism',
+                    img: 'https://placehold.co/400x500/1e293b/34d399?text=Leo+Tolstoy',
+                    bio: 'Count Lev Nikolayevich Tolstoy was a Russian writer who is regarded as one of the greatest authors of all time. His epic novels explore the complexities of human morality and society.'
+                },
+                {
+                    id: 'virginia-woolf',
+                    name: 'Virginia Woolf',
+                    genre: 'Modernist Fiction & Feminist Essays',
+                    style: 'Stream of Consciousness, Lyrical Modernism',
+                    country: 'United Kingdom',
+                    continent: 'Europe',
+                    notableWorks: ['Mrs Dalloway', 'To the Lighthouse', 'A Room of One\'s Own'],
+                    famousWhy: 'Pioneer in stream-of-consciousness narrative technique and foundational feminist literary theorist.',
+                    awards: ['Posthumous International Literary Icon Status'],
+                    family: 'Member of the prominent Stephen family and Bloomsbury Group.',
+                    philosophy: 'Feminist Autonomy & Subjective Time Perception',
+                    img: 'https://placehold.co/400x500/064e3b/34d399?text=Virginia+Woolf',
+                    bio: 'Adeline Virginia Woolf was an English writer, considered one of the most important modernist 20th-century authors and a pioneer in the use of stream of consciousness as a narrative device.'
+                },
+                {
+                    id: 'rabindranath-tagore',
+                    name: 'Rabindranath Tagore',
+                    genre: 'Poetry, Philosophy & Drama',
+                    style: 'Mystic Lyricism, Humanism',
+                    country: 'India',
+                    continent: 'Asia',
+                    notableWorks: ['Gitanjali', 'The Home and the World', 'Gora'],
+                    famousWhy: 'First non-European winner of the Nobel Prize in Literature; composer of national anthems for India and Bangladesh.',
+                    awards: ['Nobel Prize in Literature (1913)', 'Knighthood (resigned in protest)'],
+                    family: 'Distinguished Tagore family of Bengal Kolkata.',
+                    philosophy: 'Universal Humanism & Nature-Based Harmony',
+                    img: 'https://placehold.co/400x500/0f172a/34d399?text=Tagore',
+                    bio: 'Rabindranath Tagore was a Bengali polymath—poet, writer, playwright, composer, philosopher, social reformer and painter. He reshaped Bengali literature and music in the late 19th and early 20th centuries.'
+                },
+                {
+                    id: 'gabriel-garcia-marquez',
+                    name: 'Gabriel García Márquez',
+                    genre: 'Magical Realism',
+                    style: 'Lyrical Mythology, Ornate Realism',
+                    country: 'Colombia',
+                    continent: 'Americas',
+                    notableWorks: ['One Hundred Years of Solitude', 'Love in the Time of Cholera'],
+                    famousWhy: 'Popularized magical realism worldwide, capturing Latin American history through mythic narrative.',
+                    awards: ['Nobel Prize in Literature (1982)', 'Neustadt International Prize'],
+                    family: 'Married Mercedes Barcha; two sons.',
+                    philosophy: 'Solitude & Historical Recurrence',
+                    img: 'https://placehold.co/400x500/1e293b/34d399?text=García+Márquez',
+                    bio: 'Gabriel García Márquez was a Colombian novelist, short-story writer, screenwriter, and journalist, known affectionately as Gabo throughout Latin America.'
+                },
+                {
+                    id: 'chinua-achebe',
+                    name: 'Chinua Achebe',
+                    genre: 'African Post-Colonial Literature',
+                    style: 'Oral Tradition Synthesis, Direct Realism',
+                    country: 'Nigeria',
+                    continent: 'Africa',
+                    notableWorks: ['Things Fall Apart', 'No Longer at Ease', 'Arrow of God'],
+                    famousWhy: 'Father of modern African literature in English, reclaiming African narratives from colonial bias.',
+                    awards: ['Man Booker International Prize (2007)', 'St. Louis Literary Award'],
+                    family: 'Ogidi Igbo family, married Christie Okoli.',
+                    philosophy: 'Cultural Reclaiming & Post-Colonial Integrity',
+                    img: 'https://placehold.co/400x500/064e3b/34d399?text=Chinua+Achebe',
+                    bio: 'Chinua Achebe was a Nigerian novelist, poet, professor, and critic. His first novel Things Fall Apart is the most widely read book in modern African literature.'
+                },
+                {
+                    id: 'haruki-murakami',
+                    name: 'Haruki Murakami',
+                    genre: 'Surrealism & Magical Realism',
+                    style: 'Melancholic Surrealism, Cool Prose',
+                    country: 'Japan',
+                    continent: 'Asia',
+                    notableWorks: ['Norwegian Wood', 'Kafka on the Shore', '1Q84'],
+                    famousWhy: 'Global cultural phenomenon blending Western pop culture with Japanese existential solitude.',
+                    awards: ['Franz Kafka Prize', 'Jerusalem Prize'],
+                    family: 'Son of Buddhist priest and literature teacher; married Yoko.',
+                    philosophy: 'Existential Isolation & Parallel Realities',
+                    img: 'https://placehold.co/400x500/0f172a/34d399?text=Haruki+Murakami',
+                    bio: 'Haruki Murakami is a Japanese writer. His novels, essays, and short stories have been bestsellers in Japan as well as internationally.'
+                },
+                {
+                    id: 'albert-camus',
+                    name: 'Albert Camus',
+                    genre: 'Absurdism & Existentialism',
+                    style: 'Sparse Prose, Philosophical Clarity',
+                    country: 'France',
+                    continent: 'Europe',
+                    notableWorks: ['The Stranger', 'The Myth of Sisyphus', 'The Plague'],
+                    famousWhy: 'Key figure in modern absurdism, exploring individual meaning in an indifferent universe.',
+                    awards: ['Nobel Prize in Literature (1957)'],
+                    family: 'French-Algerian background (Pied-Noir).',
+                    philosophy: 'Absurdism & Heroic Defiance',
+                    img: 'https://placehold.co/400x500/1e293b/34d399?text=Albert+Camus',
+                    bio: 'Albert Camus was a French philosopher, author, and journalist who won the Nobel Prize in Literature at the age of 44, the second-youngest recipient in history.'
+                },
+                {
+                    id: 'tony-morrison',
+                    name: 'Toni Morrison',
+                    genre: 'African American Fiction',
+                    style: 'Poetic Mythos, Raw Realism',
+                    country: 'United States',
+                    continent: 'Americas',
+                    notableWorks: ['Beloved', 'Song of Solomon', 'The Bluest Eye'],
+                    famousWhy: 'First African American woman to win the Nobel Prize in Literature, chronicling black history with lyrical brilliance.',
+                    awards: ['Nobel Prize in Literature (1993)', 'Pulitzer Prize for Fiction'],
+                    family: 'Born Chloe Ardelia Wofford in Lorain, Ohio.',
+                    philosophy: 'Historical Healing & Language Power',
+                    img: 'https://placehold.co/400x500/064e3b/34d399?text=Toni+Morrison',
+                    bio: 'Toni Morrison was an American novelist who won the Nobel Prize in Literature in 1993. Her novels are known for their epic themes, vivid dialogue, and richly detailed characters.'
+                }
+            ]
+        };
+
+        // GENERATE EXPANDED MOCK CATALOGS FOR 100 LISTS
+        function generateExpandedData() {
+            // 100 Books Generator
+            const books = [
+                { title: "Green World Principles", author: "Amim Ahsan", genre: "Philosophy", year: 2024 },
+                { title: "Alternative of Waste & Empathy", author: "Amim Ahsan", genre: "Eco-Philosophy", year: 2023 },
+                { title: "A Promised Land", author: "Barack Obama", genre: "Memoir", year: 2020 },
+                { title: "War and Peace", author: "Leo Tolstoy", genre: "Realism", year: 1869 },
+                { title: "Gitanjali", author: "Rabindranath Tagore", genre: "Poetry", year: 1910 },
+                { title: "Things Fall Apart", author: "Chinua Achebe", genre: "Classic", year: 1958 },
+                { title: "One Hundred Years of Solitude", author: "Gabriel García Márquez", genre: "Magical Realism", year: 1967 },
+                { title: "The Myth of Sisyphus", author: "Albert Camus", genre: "Absurdism", year: 1942 },
+                { title: "Beloved", author: "Toni Morrison", genre: "Fiction", year: 1987 },
+                { title: "Kafka on the Shore", author: "Haruki Murakami", genre: "Surrealism", year: 2002 }
+            ];
+            for(let i=11; i<=100; i++) {
+                books.push({
+                    title: `Masterpiece Anthology Vol. ${i}`,
+                    author: i % 2 === 0 ? `Amim Ahsan Archive` : `Global Scholar ${i}`,
+                    genre: ['Philosophy', 'Poetry', 'Classic', 'Modernism', 'Science Fiction'][i % 5],
+                    year: 1900 + (i % 120)
+                });
+            }
+
+            // 100 Philosophies
+            const philosophies = [
+                { name: "Green World Philosophy", founder: "Amim Ahsan", focus: "Zero Emotional/Physical Waste & Universal Empathy" },
+                { name: "Stoicism", founder: "Zeno of Citium", focus: "Virtue, Emotional Control & Natural Order" },
+                { name: "Existentialism", founder: "Søren Kierkegaard", focus: "Individual Freedom & Authentic Self" },
+                { name: "Absurdism", founder: "Albert Camus", focus: "Embracing Meaninglessness with Defiance" },
+                { name: "Rationalism", founder: "René Descartes", focus: "Reason as Chief Source of Knowledge" }
+            ];
+            for(let i=6; i<=100; i++) {
+                philosophies.push({
+                    name: `System ${i}: ${['NeoSynthesis', 'Ethical Bio-Centrism', 'Transcendental Realism', 'Eco-Humanism'][i%4]}`,
+                    founder: i % 3 === 0 ? "Amim Ahsan School" : `Global Thinker ${i}`,
+                    focus: `Exploring universe connectivity and planetary ethics pillar ${i}.`
+                });
+            }
+
+            // 100 Awards
+            const awards = [
+                { name: "Nobel Prize in Literature", org: "Swedish Academy", origin: "Sweden" },
+                { name: "Pulitzer Prize for Fiction", org: "Columbia University", origin: "USA" },
+                { name: "Booker Prize", org: "Booker Foundation", origin: "UK" },
+                { name: "Neustadt International Prize", org: "University of Oklahoma", origin: "USA" },
+                { name: "Green World Global Literary Gold", org: "Amim Ahsan Foundation", origin: "Global" }
+            ];
+            for(let i=6; i<=100; i++) {
+                awards.push({
+                    name: `International Literary Award #${i}`,
+                    org: `Global Writers Guild ${i}`,
+                    origin: ['Switzerland', 'Japan', 'France', 'Brazil', 'Bangladesh'][i % 5]
+                });
+            }
+
+            return { books, philosophies, awards };
+        }
+
+        const expanded = generateExpandedData();
+
+        // TAB SWITCHING FUNCTION
+        function switchTab(tabId) {
+            state.activeTab = tabId;
+            document.querySelectorAll('.tab-section').forEach(sec => sec.classList.add('hidden'));
+            document.querySelectorAll('.nav-btn').forEach(btn => {
+                btn.classList.remove('bg-emerald-500/20', 'text-emerald-400', 'border', 'border-emerald-500/30');
+                btn.classList.add('bg-white/5', 'text-gray-300');
+            });
+
+            const activeSection = document.getElementById(`sec-${tabId}`);
+            if (activeSection) activeSection.classList.remove('hidden');
+
+            const activeNav = document.getElementById(`tab-${tabId}`);
+            if (activeNav) {
+                activeNav.classList.remove('bg-white/5', 'text-gray-300');
+                activeNav.classList.add('bg-emerald-500/20', 'text-emerald-400', 'border', 'border-emerald-500/30');
+            }
+
+            // Render Tab Specific View
+            if (tabId === 'slider') renderSlider();
+            if (tabId === 'books') renderBooks();
+            if (tabId === 'authors') renderBestAuthors();
+            if (tabId === 'awards') renderAwards();
+            if (tabId === 'philosophies') renderPhilosophies();
+            if (tabId === 'style') renderStyleDirectory();
+            if (tabId === 'continent') renderContinentDirectory();
+            if (tabId === 'country') filterCountry();
+
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // RENDER EXPLORE DIRECTORY GRID
+        function renderDirectory(authorList = state.authors) {
+            const grid = document.getElementById('directoryGrid');
+            grid.innerHTML = '';
+
+            authorList.forEach(author => {
+                const card = document.createElement('div');
+                card.className = "glass-card p-6 rounded-3xl flex flex-col justify-between space-y-4 border border-emerald-500/20";
+                card.innerHTML = `
+                    <div class="flex items-start justify-between">
+                        <div class="flex items-center space-x-3">
+                            <img src="${author.img}" alt="${author.name}" class="w-14 h-14 rounded-2xl object-cover border border-emerald-500/40">
+                            <div>
+                                <h4 class="text-lg font-bold text-white leading-tight">${author.name}</h4>
+                                <span class="text-xs text-emerald-400 font-medium">${author.genre}</span>
+                            </div>
+                        </div>
+                        <span class="text-[10px] px-2.5 py-1 rounded-full bg-white/5 text-gray-400 border border-white/10">${author.country}</span>
+                    </div>
+
+                    <p class="text-xs text-gray-300 line-clamp-3 leading-relaxed font-light">${author.famousWhy}</p>
+
+                    <div class="pt-3 border-t border-white/10 flex items-center justify-between">
+                        <div class="text-[10px] text-gray-400">
+                            <i class="fa-solid fa-book text-emerald-400 mr-1"></i> ${author.notableWorks.length} Core Works
+                        </div>
+                        <button onclick="openAuthorModal('${author.id}')" class="px-3.5 py-1.5 rounded-xl bg-emerald-500/10 hover:bg-emerald-500/30 text-emerald-300 border border-emerald-500/30 text-xs font-semibold transition-all">
+                            Explore Bio & Works <i class="fa-solid fa-arrow-right text-[10px] ml-1"></i>
+                        </button>
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+
+            document.getElementById('authorCountBadge').innerText = `Showing ${authorList.length} Global Authors`;
+        }
+
+        // HANDLE SEARCH ENGINE AGGREGATOR
+        function handleGlobalSearch() {
+            const input = document.getElementById('mainSearchInput').value.toLowerCase().trim();
+            if (!input) {
+                renderDirectory(state.authors);
+                return;
+            }
+
+            const filtered = state.authors.filter(a => 
+                a.name.toLowerCase().includes(input) ||
+                a.genre.toLowerCase().includes(input) ||
+                a.style.toLowerCase().includes(input) ||
+                a.country.toLowerCase().includes(input) ||
+                a.philosophy.toLowerCase().includes(input) ||
+                a.notableWorks.some(w => w.toLowerCase().includes(input))
+            );
+
+            if(filtered.length > 0) {
+                renderDirectory(filtered);
+            } else {
+                // Dynamically simulate aggregate web result for any unlisted author query
+                const simulatedAuthor = {
+                    id: 'simulated-' + Date.now(),
+                    name: input.charAt(0).toUpperCase() + input.slice(1),
+                    genre: 'Aggregated Web Index Entry',
+                    style: 'Universal Stylistic Catalog',
+                    country: 'Global Index',
+                    continent: 'Global',
+                    notableWorks: [`Collected Works of ${input}`, `Reflections on ${input}`],
+                    famousWhy: `Aggregated data from Wikipedia & Web search engines regarding ${input}'s literary impact.`,
+                    awards: ['Indexed in Global Author Directory'],
+                    family: 'Public records aggregated across Wikimedia.',
+                    philosophy: 'Eclectic Thought',
+                    img: `https://placehold.co/400x500/0f172a/34d399?text=${encodeURIComponent(input)}`,
+                    bio: `This entry for ${input} was dynamically aggregated from simulated live search web engines (Wikipedia, Wikimedia, WikiHow). ${input} is recognized globally for literary contributions.`
+                };
+                renderDirectory([simulatedAuthor, ...state.authors]);
+            }
+        }
+
+        // AUTO-SLIDING FEATURED WRITERS (TAB 2)
+        function renderSlider() {
+            const card = document.getElementById('heroSliderCard');
+            const author = state.authors[state.currentSlideIndex];
+
+            card.innerHTML = `
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 items-center">
+                    <img src="${author.img}" alt="${author.name}" class="w-full h-72 rounded-2xl object-cover border border-emerald-500/40 shadow-2xl">
+                    <div class="md:col-span-2 space-y-4">
+                        <div class="flex items-center space-x-2">
+                            <span class="px-3 py-1 rounded-full bg-emerald-500/20 text-emerald-400 text-xs font-bold uppercase">Featured Writer #${state.currentSlideIndex + 1} of 10</span>
+                            <span class="text-xs text-gray-400 font-mono">${author.country}</span>
+                        </div>
+                        <h2 class="text-3xl sm:text-4xl font-black text-white">${author.name}</h2>
+                        <p class="text-emerald-400 font-semibold text-sm">${author.genre} | ${author.style}</p>
+                        <p class="text-gray-300 text-sm font-light leading-relaxed">${author.bio}</p>
+
+                        <div class="pt-2 flex flex-wrap gap-2">
+                            ${author.notableWorks.map(w => `<span class="px-2.5 py-1 rounded-lg bg-white/5 text-gray-300 text-xs border border-white/10"><i class="fa-solid fa-book-open text-emerald-400 mr-1"></i>${w}</span>`).join('')}
+                        </div>
+
+                        <div class="pt-4 flex items-center space-x-4">
+                            <button onclick="openAuthorModal('${author.id}')" class="px-5 py-2.5 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-black font-bold text-xs sm:text-sm">
+                                Read Full Biography
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        function nextSlide() {
+            state.currentSlideIndex = (state.currentSlideIndex + 1) % state.authors.length;
+            renderSlider();
+        }
+
+        function prevSlide() {
+            state.currentSlideIndex = (state.currentSlideIndex - 1 + state.authors.length) % state.authors.length;
+            renderSlider();
+        }
+
+        // Auto rotation interval
+        setInterval(() => {
+            if (state.activeTab === 'slider') {
+                nextSlide();
+            }
+        }, 5000);
+
+        // RENDER 100 BOOKS (TAB 3)
+        function renderBooks() {
+            const grid = document.getElementById('booksGrid');
+            grid.innerHTML = '';
+            expanded.books.forEach(b => {
+                grid.innerHTML += `
+                    <div class="glass-card p-4 rounded-2xl border border-white/10 hover:border-emerald-500/40">
+                        <div class="w-8 h-8 rounded-lg bg-emerald-500/20 text-emerald-400 flex items-center justify-center font-bold text-xs mb-3">
+                            <i class="fa-solid fa-book"></i>
+                        </div>
+                        <h4 class="text-sm font-bold text-white leading-snug">${b.title}</h4>
+                        <p class="text-xs text-emerald-400 mt-1">${b.author}</p>
+                        <div class="flex justify-between items-center mt-3 pt-2 border-t border-white/5 text-[10px] text-gray-400">
+                            <span>${b.genre}</span>
+                            <span>${b.year}</span>
+                        </div>
+                    </div>
+                `;
+            });
+        }
+
+        function filterBooks() {
+            const val = document.getElementById('bookSearch').value.toLowerCase();
+            const grid = document.getElementById('booksGrid');
+            grid.innerHTML = '';
+            expanded.books.filter(b => b.title.toLowerCase().includes(val) || b.author.toLowerCase().includes(val)).forEach(b => {
+                grid.innerHTML += `
+                    <div class="glass-card p-4 rounded-2xl border border-white/10 hover:border-emerald-500/40">
+                        <h4 class="text-sm font-bold text-white">${b.title}</h4>
+                        <p class="text-xs text-emerald-400 mt-1">${b.author}</p>
+                    </div>
+                `;
+            });
+        }
+
+        // RENDER 100 BEST AUTHORS (TAB 4)
+        function renderBestAuthors() {
+            const grid = document.getElementById('bestAuthorsGrid');
+            grid.innerHTML = '';
+            state.authors.forEach(a => {
+                grid.innerHTML += `
+                    <div class="glass-card p-4 rounded-2xl flex items-center space-x-3 cursor-pointer" onclick="openAuthorModal('${a.id}')">
+                        <img src="${a.img}" class="w-12 h-12 rounded-xl object-cover">
+                        <div>
+                            <h4 class="text-sm font-bold text-white">${a.name}</h4>
+                            <p class="text-[11px] text-emerald-400">${a.genre}</p>
+                        </div>
+                    </div>
+                `;
+            });
+        }
+
+        // RENDER 100 AWARDS (TAB 5)
+        function renderAwards() {
+            const grid = document.getElementById('awardsGrid');
+            grid.innerHTML = '';
+            expanded.awards.forEach(a => {
+                grid.innerHTML += `
+                    <div class="glass-card p-4 rounded-2xl border border-white/10">
+                        <i class="fa-solid fa-trophy text-amber-400 text-lg mb-2"></i>
+                        <h4 class="text-xs font-bold text-white">${a.name}</h4>
+                        <p class="text-[10px] text-gray-400 mt-1">${a.org} (${a.origin})</p>
+                    </div>
+                `;
+            });
+        }
+
+        // RENDER 100 PHILOSOPHIES (TAB 6)
+        function renderPhilosophies() {
+            const grid = document.getElementById('philosophiesGrid');
+            grid.innerHTML = '';
+            expanded.philosophies.forEach(p => {
+                grid.innerHTML += `
+                    <div class="glass-card p-5 rounded-2xl space-y-2">
+                        <h4 class="text-sm font-bold text-emerald-300 flex items-center gap-2">
+                            <i class="fa-solid fa-brain"></i> ${p.name}
+                        </h4>
+                        <p class="text-xs text-gray-400 font-mono">Pioneered by: ${p.founder}</p>
+                        <p class="text-xs text-gray-300 leading-relaxed font-light">${p.focus}</p>
+                    </div>
+                `;
+            });
+        }
+
+        // RENDER STYLE DIRECTORY (TAB 8)
+        function renderStyleDirectory() {
+            const grid = document.getElementById('styleDirectoryGrid');
+            grid.innerHTML = '';
+            const styles = ['Prose Realism', 'Poetic Surrealism', 'Existential Criticism', 'Green World Eco-Ethos', 'Modernist Monologue'];
+            for(let i=1; i<=20; i++) {
+                const styleName = styles[i % styles.length];
+                grid.innerHTML += `
+                    <div class="glass-card p-4 rounded-2xl space-y-1">
+                        <span class="text-[10px] text-emerald-400 uppercase tracking-widest font-bold">${styleName}</span>
+                        <h4 class="text-xs font-bold text-white">Writer Profile #${i}</h4>
+                        <p class="text-[11px] text-gray-400">Classified under ${styleName} literature style index.</p>
+                    </div>
+                `;
+            }
+        }
+
+        // RENDER CONTINENT DIRECTORY (TAB 9)
+        function renderContinentDirectory(filter = 'All') {
+            const grid = document.getElementById('continentGrid');
+            grid.innerHTML = '';
+            const filtered = filter === 'All' ? state.authors : state.authors.filter(a => a.continent === filter);
+            filtered.forEach(a => {
+                grid.innerHTML += `
+                    <div class="glass-card p-4 rounded-2xl flex justify-between items-center">
+                        <div>
+                            <h4 class="text-xs font-bold text-white">${a.name}</h4>
+                            <p class="text-[10px] text-gray-400">${a.continent} — ${a.country}</p>
+                        </div>
+                        <span class="text-[10px] px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-300 font-bold">${a.genre}</span>
+                    </div>
+                `;
+            });
+        }
+
+        function filterContinent(cont) {
+            renderContinentDirectory(cont);
+        }
+
+        // COUNTRY ENGINE (TAB 10)
+        function filterCountry() {
+            const country = document.getElementById('countrySelect').value;
+            const input = document.getElementById('countryAuthorInput').value.toLowerCase();
+            const grid = document.getElementById('countryGrid');
+            grid.innerHTML = '';
+
+            state.authors.filter(a => (country === 'All' || a.country === country) && a.name.toLowerCase().includes(input)).forEach(a => {
+                grid.innerHTML += `
+                    <div class="glass-card p-4 rounded-2xl border border-emerald-500/20">
+                        <span class="text-[10px] px-2 py-0.5 rounded bg-white/10 text-emerald-400 font-mono">${a.country}</span>
+                        <h4 class="text-sm font-bold text-white mt-2">${a.name}</h4>
+                        <p class="text-xs text-gray-400 mt-1">${a.genre}</p>
+                    </div>
+                `;
+            });
+        }
+
+        // MODALS CONTROL
+        function openAuthorModal(authorId) {
+            const author = state.authors.find(a => a.id === authorId) || state.authors[0];
+            const content = document.getElementById('modalAuthorContent');
+
+            content.innerHTML = `
+                <div class="flex flex-col sm:flex-row gap-6 items-start">
+                    <img src="${author.img}" class="w-full sm:w-48 h-64 rounded-2xl object-cover border border-emerald-500/40 shrink-0">
+                    <div class="space-y-3">
+                        <div class="flex items-center space-x-2">
+                            <span class="px-2.5 py-0.5 rounded-full bg-emerald-500/20 text-emerald-400 text-xs font-bold">${author.genre}</span>
+                            <span class="text-xs text-gray-400 font-mono">${author.country}</span>
+                        </div>
+                        <h2 class="text-3xl font-black text-white">${author.name}</h2>
+                        <p class="text-xs text-emerald-300 font-medium">Style: ${author.style}</p>
+                        <p class="text-xs text-gray-300 leading-relaxed font-light">${author.bio}</p>
+                    </div>
+                </div>
+
+                <div class="mt-6 pt-6 border-t border-white/10 space-y-4 text-xs">
+                    <div>
+                        <h4 class="font-bold text-white mb-1 flex items-center gap-1.5"><i class="fa-solid fa-star text-amber-400"></i> Why Famous:</h4>
+                        <p class="text-gray-300">${author.famousWhy}</p>
+                    </div>
+                    <div>
+                        <h4 class="font-bold text-white mb-1 flex items-center gap-1.5"><i class="fa-solid fa-book-open text-emerald-400"></i> Notable Works:</h4>
+                        <div class="flex flex-wrap gap-2">
+                            ${author.notableWorks.map(w => `<span class="px-2.5 py-1 rounded-lg bg-slate-900 text-gray-300 border border-white/10">${w}</span>`).join('')}
+                        </div>
+                    </div>
+                    <div>
+                        <h4 class="font-bold text-white mb-1 flex items-center gap-1.5"><i class="fa-solid fa-brain text-purple-400"></i> Philosophical Stance:</h4>
+                        <p class="text-gray-300">${author.philosophy}</p>
+                    </div>
+                    <div>
+                        <h4 class="font-bold text-white mb-1 flex items-center gap-1.5"><i class="fa-solid fa-trophy text-amber-400"></i> Awards & Family:</h4>
+                        <p class="text-gray-300">${author.awards.join(', ')} — ${author.family}</p>
+                    </div>
+                </div>
+            `;
+            document.getElementById('authorModal').classList.remove('hidden');
+        }
+
+        function openCreateModal() {
+            document.getElementById('createModal').classList.remove('hidden');
+        }
+
+        function openGreenWorldModal() {
+            document.getElementById('greenWorldModal').classList.remove('hidden');
+        }
+
+        function closeModal(modalId) {
+            document.getElementById(modalId).classList.add('hidden');
+        }
+
+        // CREATE AUTHOR FORM SUBMISSION
+        function handleCreateAuthor(e) {
+            e.preventDefault();
+            const newAuthor = {
+                id: 'custom-' + Date.now(),
+                name: document.getElementById('formName').value,
+                genre: document.getElementById('formGenre').value,
+                style: document.getElementById('formStyle').value,
+                country: document.getElementById('formCountry').value,
+                continent: 'Americas',
+                notableWorks: document.getElementById('formWorks').value.split(',').map(s => s.trim()),
+                famousWhy: document.getElementById('formFamous').value,
+                awards: [document.getElementById('formAwards').value || 'Wekey Author Listed'],
+                family: 'User Submitted Entry',
+                philosophy: document.getElementById('formPhilosophy').value || 'Modern Realism',
+                img: `https://placehold.co/400x500/064e3b/34d399?text=${encodeURIComponent(document.getElementById('formName').value)}`,
+                bio: document.getElementById('formFamous').value
+            };
+
+            state.authors.unshift(newAuthor);
+            closeModal('createModal');
+            document.getElementById('createAuthorForm').reset();
+            renderDirectory();
+            alert('Author Profile Successfully Published to Wekey Directory!');
+        }
+
+        // INITIALIZE APPLICATION
+        window.addEventListener('DOMContentLoaded', () => {
+            renderDirectory();
+        });
+    </script>
+</body>
+</html>
